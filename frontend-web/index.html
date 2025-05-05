@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Datos en tiempo real</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/7.0.5/signalr.min.js"></script>
+</head>
+<body>
+  <h1>Mensajes del dispositivo</h1>
+  <ul id="mensajes"></ul>
+
+  <script>
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl("http://localhost:5079/instrumentosHub") // Asegúrate de usar la URL real del backend
+      .build();
+
+    connection.on("ReceiveMessage", (msg) => {
+      const li = document.createElement("li");
+      li.textContent = msg;
+      document.getElementById("mensajes").appendChild(li);
+    });
+
+    connection.start().catch(err => console.error(err));
+  </script>
+</body>
+</html>
